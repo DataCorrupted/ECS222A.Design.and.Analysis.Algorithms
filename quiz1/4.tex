@@ -1,0 +1,48 @@
+
+\section*{Q4}
+
+\begin{lstlisting}[language=C]
+int foo(int A[]){
+    n=A.size
+    if (n<4) return 1;
+    for(i=2 to n){
+        call temp(A[1..i/2]);
+    }
+
+    int x = foo(A[1 ..n/y]) + foo(A[n/y ..2n/y]);
+    return foo(A[1 ..n/y]) + x;
+}
+\end{lstlisting}
+
+Given that temp has an asymptotic tight bound of $\Theta(n)$
+\begin{enumerate}
+    \item Provide the recurrence of the code above.
+    \item Prove that the recurrence above $O(n^y)$ asymptotic upper bound using subsitution.
+\end{enumerate}
+
+\subsection*{Solution}
+
+\textbf{Note:} From program analysis perspective, two function calls \lstinline{foo(A[1 ..n/y])} in line 8 and 9 will not be repeated.
+The compiler will most likely to cache the result and use it without actually executing the second function call.
+However, here we assume that every function call is executed with no optimization.
+
+
+\begin{enumerate}
+    \item $$T(n) = 3T(n/y) + n\Theta(n)$$ $$T(k) = 1, \text{where } k = 0, 1, 2, 3$$
+    \item \begin{proof}
+              Let's proof by induction.
+              First assume $T(n) = O(n^y)$, i.e. $T(n) \le n^y$.
+
+              Base case. When $n = 0, 1, 2, 3$, $T(n) = 1 \le n^y$.
+
+              Induction case. Suppose $T(n/y) \le (n/y)^y$, then we have:
+
+              \begin{align*}
+                  T(n) & =   3T(n/y) + n\Theta(n) \\
+                       & \le 3(n/y)^y + n^2       \\
+                       & < n^y
+              \end{align*}
+
+              Therefore, $T(n) = O(n^y)$
+          \end{proof}
+\end{enumerate}

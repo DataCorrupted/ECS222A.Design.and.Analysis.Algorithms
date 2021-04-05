@@ -1,0 +1,23 @@
+
+\section*{Q2}
+
+Solve via recurrence tree or master theorem:
+
+\begin{enumerate}
+    \item $T(n) = yT(n/y) + n \log n$
+    \item $T(n) = y^2T(n/y) + n^y + n^2\log n$
+\end{enumerate}
+
+\subsection*{Solution}
+
+\begin{enumerate}
+    \item Using master theorem, we have
+          $$a = b = y = 7, c_{crit} = \log_b a = 1$$
+          $$f(n) = n \log n = \Theta(n^{c_{crit}}\log^1n), k=1$$
+          Therefore, $$T(n) = \Theta(n^{c_{crit}}\log^{k+1}n) = \Theta(n \log^2 n)$$
+    \item Using master theorem, we have
+          $$a = y^2 = 49, b = y = 7, c_{crit} = \log_b a = 2$$
+          $$f(n) = n^7 + n^2\log n = \Omega(n^c), c = 7 > c_{crit}$$
+          Therefore, $$T(n) = \Theta(f(n)) = \Theta(n^7)$$
+
+\end{enumerate}
