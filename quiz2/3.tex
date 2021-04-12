@@ -1,0 +1,79 @@
+
+\section*{Q3}
+
+In the "pretty printing problem"(Kleinberg and Tardos Chapter 6, Problem 6) assume we are required that every line must have an even number of words.
+(you may assume n is divisible by 2 otherwise there is no solution)
+
+\begin{enumerate}
+    \item Create a recurrence for the optimal solution.
+    \item Create a dynamic program and analyze its runtime.
+\end{enumerate}
+
+\subsection*{Solution}
+
+\begin{enumerate}
+    \item Brute force.
+
+          We use partial sums to accelate calculation. $P(j) = P(j-1) + w_j$, thus the sum of characters from $i$ to $j$ is $P(j) - P(i)$.
+          \begin{lstlisting}[language = C]
+// Tests if there will be a line that has more characters than L
+bool is_valid(int k) {
+    ...
+}
+
+int get_min_cost() {
+    // Calculate P(k);
+
+    // Brute force.
+    int min_cost = 0x7fffffff;
+    for (int k=1; k<n; k++){
+        if (!is_valid(k)) {
+            continue;
+        }
+        int cost = 0;
+
+        // For each line, sum up the cost.
+
+        if (cost < min_cost) {
+            min_cost = cost;
+        }
+    }
+    return min_cost;
+}
+    \end{lstlisting}
+    \item DP solution.
+
+          Let's assume $opt(k, j)$ being ``Suppose each line has $k$ words, we are working on $j$-th word''.
+          Therefore, there are two implied border conditions:
+          \begin{itemize}
+              \item $\forall k, opt(k, 0) = L^2$, i.e. there is only one line with nothing in it.
+              \item $\forall j, opt(0, j) = \infty$, i.e. we put nothing in each line, and thus it takes infinity lines, which is not valid.
+          \end{itemize}
+
+          Now we can derive a transfer function:
+
+          \begin{minipage}{\linewidth}
+              \begin{lstlisting}[language=c]
+if (j % k == 0) {   // We have to start a new line or change k.
+    opt[k, j] = min (
+        // Start a new line.
+        opt[k, j-1] + (*@ $(L-w_j)^2$ @*),     
+
+        // Try a smaller k.
+        opt[k-1, j],                            
+    )
+} else if (is_valid(k)) { // We can attach word j into the last line if there is enough space.
+    opt[k, j] = min (
+        // Suppose t is the index of the starting word.
+        opt[k, j-1] - (*@ $S_{t, j-1}^2 + S_{t, j}^2$ @*), 
+
+        // Try a smaller k.
+        opt[k-1, j],                            
+    )
+} else {
+    // k is too large to fit into j, try smaller one.
+    opt[k, j] = opt[k-1, j];                   
+}
+\end{lstlisting}
+          \end{minipage}
+\end{enumerate}
