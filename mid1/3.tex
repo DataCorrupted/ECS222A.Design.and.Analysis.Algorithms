@@ -1,0 +1,55 @@
+
+\section*{Q3}
+
+New Shuffle: Suppose you are given three strings $W$,$X$,$Y$, such that $|W|=n$,$∣X∣=m$,$|Y|=l$ and you wish to know if a fourth-string $|Z|=n+m+l$ is the shuffle of $W$,$X$,$Y$.
+A shuffle of 3 strings is valid if characters of $W$ appear in the order in $Z$ and if we remove those characters what is left is a shuffle of $X$, $Y$as defined in the homework.
+
+\begin{enumerate}
+    \item Provide a recurrence for this problem.
+    \item Provide the dynamic programming solution for this problem.
+\end{enumerate}
+
+\subsection*{Solution}
+
+\begin{enumerate}
+    \item \begin{lstlisting}[language=C]
+bool is_shuffle(W, X, Y, Z) {
+    if (W == "" && X == "" && Y == "" && Z == "") {
+        return true;
+    }
+    return 
+        (W[-1] == Z[-1]) && is_shuffle(W[:-1], X, Y, Z[-1]) || 
+        (W[-1] == Z[-1]) && is_shuffle(W, X[:-1], Y, Z[-1]) ||
+        (W[-1] == Z[-1]) && is_shuffle(W, X, Y[:-1], Z[-1]);
+}
+    \end{lstlisting}
+
+    \item Let's setup \lstinline{bool[n+1][m+1][l+1] opt;}
+          \lstinline{opt[i, j, k]} refers to ``Is it possible that \lstinline{Z[1..i+j+k]} is a shuffle of \lstinline{W[1..i],} \lstinline{X[1..j]} and \lstinline{Y[1..k]}''.
+          (Suppose the string index starts from 1.)
+
+          Therefore, it's easy to setup the only boundary condition: \lstinline{opt[0, 0, 0] = true;} i.e. a null string can be a shuffle of 3 null strings.
+
+          Then we have the algorithm:
+
+          \begin{lstlisting}[language=C]
+bool is_shuffle_dp(W, X, Y){
+    for (i = 0; i<n+1; i++) {
+        for (j = 0; j<m+1; j++) {
+            for (k = 0; k<l+1; k++){
+                if (i == 0 && j == 0 && k == 0) {
+                    opt[i, j, k] = true;
+                    continue;
+                }
+                char cur = Z[i + j + k]
+                opt[i, j, k] = 
+                    opt[i-1, j, k] && (W[i] == cur) || 
+                    opt[i, j-1, k] && (X[j] == cur) ||
+                    opt[i, j, k-1] && (Y[k] == cur);
+            }
+        }
+    }
+    return opt[n, m, l];
+}
+          \end{lstlisting}
+\end{enumerate}

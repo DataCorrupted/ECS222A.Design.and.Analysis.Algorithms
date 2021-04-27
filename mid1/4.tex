@@ -1,0 +1,214 @@
+
+\section*{Q4}
+
+\begin{enumerate}
+    \item Find the max flow using FF algorithm.
+
+          \begin{figure}[H]
+              \centering
+              \begin{tikzpicture}[auto]
+                  \tikzstyle{every node} = [align=center, draw, circle, node distance = 2cm]
+                  \node(s){s};
+                  \node[above right of=s](a){a};
+                  \node[below right of=s](c){c};
+                  \node[right of=a](b){b};
+                  \node[right of=c](d){d};
+                  \node[below right of=b](t){t};
+
+                  \path (s) edge[cfgedge] node[draw=none, above](){11} (a);
+                  \path (s) edge[cfgedge] node[draw=none, below](){12} (c);
+                  \path (c) edge[cfgedge] node[draw=none](){1} (a);
+                  \path (a) edge[cfgedge] node[draw=none](){12} (b);
+                  \path (c) edge[cfgedge] node[draw=none](){11} (d);
+                  \path (d) edge[cfgedge] node[draw=none](){7} (b);
+                  \path (b) edge[cfgedge] node[draw=none, above](){19} (t);
+                  \path (d) edge[cfgedge] node[draw=none, below](){14} (t);
+              \end{tikzpicture}
+          \end{figure}
+
+          Show your work.
+    \item If we decreased the capacity of the edge $(d,b)$ would this decrease the max flow?
+    \item What is the min capacity cut of this network?
+          What are the edges that cross the cut that make up this capacity?
+\end{enumerate}
+
+\subsection*{Solution}
+
+\begin{enumerate}
+    \item (I'm not sure if I have time to use tikz to draw all residual network...)
+
+          \begin{enumerate}
+              \item Initial residual graph $G_f$ is the same as $G$.
+                    As shown in \autoref{fig:1}.
+                    \begin{figure}[H]
+                        \centering
+                        \begin{tikzpicture}[auto]
+                            \tikzstyle{every node} = [align=center, draw, circle, node distance = 2cm]
+                            \node(s){s};
+                            \node[above right of=s](a){a};
+                            \node[below right of=s](c){c};
+                            \node[right of=a](b){b};
+                            \node[right of=c](d){d};
+                            \node[below right of=b](t){t};
+
+                            \path (s) edge[cfgedge] node[draw=none, above](){11} (a);
+                            \path (s) edge[cfgedge] node[draw=none, below](){12} (c);
+                            \path (c) edge[cfgedge] node[draw=none](){1} (a);
+                            \path (a) edge[cfgedge] node[draw=none](){12} (b);
+                            \path (c) edge[cfgedge] node[draw=none](){11} (d);
+                            \path (d) edge[cfgedge] node[draw=none](){7} (b);
+                            \path (b) edge[cfgedge] node[draw=none, above](){19} (t);
+                            \path (d) edge[cfgedge] node[draw=none, below](){14} (t);
+                        \end{tikzpicture}
+                        \label{fig:1}
+                        \caption{Initial graph.}
+                    \end{figure}
+
+              \item Find path $s \rightarrow a \rightarrow b \rightarrow t$ in residual network, min flow in this path is 11.
+                    As shown in \autoref{fig:2}.
+                    \begin{figure}[H]
+                        \centering
+                        \begin{tikzpicture}[auto]
+                            \tikzstyle{every node} = [align=center, draw, circle, node distance = 2cm]
+                            \node(s){s};
+                            \node[above right of=s](a){a};
+                            \node[below right of=s](c){c};
+                            \node[right of=a](b){b};
+                            \node[right of=c](d){d};
+                            \node[below right of=b](t){t};
+
+                            \path (a) edge[thickcfgedge] node[draw=none, above](){11} (s);
+                            \path (s) edge[cfgedge] node[draw=none, below](){12} (c);
+                            \path (c) edge[cfgedge] node[draw=none](){1} (a);
+                            \path (a) edge[thickcfgedge, bend left] node[draw=none](){1} (b);
+                            \path (b) edge[thickcfgedge, bend left] node[draw=none](){11} (a);
+                            \path (c) edge[cfgedge] node[draw=none](){11} (d);
+                            \path (d) edge[cfgedge] node[draw=none](){7} (b);
+                            \path (t) edge[thickcfgedge, bend left] node[draw=none, above](){11} (b);
+                            \path (b) edge[thickcfgedge, bend left] node[draw=none, above](){8} (t);
+                            \path (d) edge[cfgedge] node[draw=none, below](){14} (t);
+                        \end{tikzpicture}
+                        \label{fig:2}
+                        \caption{Residual graph after we found path $s \rightarrow a \rightarrow b \rightarrow t$.}
+
+                    \end{figure}
+
+              \item Find path $s \rightarrow c \rightarrow a \rightarrow b \rightarrow t$ in residual network, min flow in this path is 1.
+                    As shown in \autoref{fig:3}.
+                    \begin{figure}[H]
+                        \centering
+                        \begin{tikzpicture}[auto]
+                            \tikzstyle{every node} = [align=center, draw, circle, node distance = 2cm]
+                            \node(s){s};
+                            \node[above right of=s](a){a};
+                            \node[below right of=s](c){c};
+                            \node[right of=a](b){b};
+                            \node[right of=c](d){d};
+                            \node[below right of=b](t){t};
+
+                            \path (a) edge[cfgedge] node[draw=none, above](){11} (s);
+                            \path (s) edge[thickcfgedge, bend left] node[draw=none, below](){11} (c);
+                            \path (c) edge[thickcfgedge, bend left] node[draw=none, below](){1} (s);
+                            \path (a) edge[thickcfgedge] node[draw=none](){1} (c);
+                            \path (b) edge[thickcfgedge] node[draw=none](){12} (a);
+                            \path (c) edge[cfgedge] node[draw=none](){11} (d);
+                            \path (d) edge[cfgedge] node[draw=none](){7} (b);
+                            \path (t) edge[thickcfgedge, bend left] node[draw=none, above](){12} (b);
+                            \path (b) edge[thickcfgedge, bend left] node[draw=none, above](){7} (t);
+                            \path (d) edge[cfgedge] node[draw=none, below](){14} (t);
+                        \end{tikzpicture}
+                        \label{fig:3}
+                        \caption{Residual graph after we found path $s \rightarrow c \rightarrow a \rightarrow b \rightarrow t$.}
+                    \end{figure}
+
+              \item Find path $s \rightarrow c \rightarrow d \rightarrow t$ in residual network, min flow in this path is 11.
+                    As shown in \autoref{fig:4}.
+                    \begin{figure}[H]
+                        \centering
+                        \begin{tikzpicture}[auto]
+                            \tikzstyle{every node} = [align=center, draw, circle, node distance = 2cm]
+                            \node(s){s};
+                            \node[above right of=s](a){a};
+                            \node[below right of=s](c){c};
+                            \node[right of=a](b){b};
+                            \node[right of=c](d){d};
+                            \node[below right of=b](t){t};
+
+                            \path (a) edge[cfgedge] node[draw=none, above](){11} (s);
+                            \path (s) edge[thickcfgedge, bend left] node[draw=none, below](){7} (c);
+                            \path (c) edge[thickcfgedge, bend left] node[draw=none, below](){5} (s);
+                            \path (a) edge[cfgedge] node[draw=none](){1} (c);
+                            \path (b) edge[cfgedge] node[draw=none](){12} (a);
+                            \path (c) edge[thickcfgedge, bend left] node[draw=none](){7} (d);
+                            \path (d) edge[thickcfgedge, bend left] node[draw=none](){4} (c);
+                            \path (d) edge[cfgedge] node[draw=none](){7} (b);
+                            \path (t) edge[cfgedge, bend left] node[draw=none, above](){12} (b);
+                            \path (b) edge[cfgedge, bend left] node[draw=none, above](){7} (t);
+                            \path (t) edge[thickcfgedge] node[draw=none, below](){4} (d);
+                        \end{tikzpicture}
+                        \label{fig:4}
+                        \caption{Residual graph after we found path $s \rightarrow c \rightarrow d \rightarrow t$}
+                    \end{figure}
+
+              \item Find path $s \rightarrow c \rightarrow d \rightarrow b \rightarrow t$ in residual network, min flow in this path is 7.
+                    As shown in \autoref{fig:5}.
+                    \begin{figure}[H]
+                        \centering
+                        \begin{tikzpicture}[auto]
+                            \tikzstyle{every node} = [align=center, draw, circle, node distance = 2cm]
+                            \node(s){s};
+                            \node[above right of=s](a){a};
+                            \node[below right of=s](c){c};
+                            \node[right of=a](b){b};
+                            \node[right of=c](d){d};
+                            \node[below right of=b](t){t};
+
+                            \path (a) edge[cfgedge] node[draw=none, above](){11} (s);
+                            \path (c) edge[thickcfgedge] node[draw=none, below](){12} (s);
+                            \path (a) edge[cfgedge] node[draw=none](){1} (c);
+                            \path (b) edge[cfgedge] node[draw=none](){12} (a);
+                            \path (d) edge[thickcfgedge] node[draw=none](){11} (c);
+                            \path (b) edge[thickcfgedge] node[draw=none](){7} (d);
+                            \path (t) edge[thickcfgedge] node[draw=none, above](){19} (b);
+                            \path (t) edge[cfgedge] node[draw=none, below](){14} (d);
+                        \end{tikzpicture}
+                        \label{fig:5}
+                        \caption{Residual graph after we found path $s \rightarrow c \rightarrow d \rightarrow b \rightarrow t$.}
+                    \end{figure}
+
+              \item $s$ to $t$ is disconnected in residual network, the algorithm is finished.
+          \end{enumerate}
+
+          Therefore, the max flow is 23.
+
+    \item Yes, as there is a path that relies on $(d, b)$, i.e. it's the min flow in that path.
+          Reducing $(d, b)$ would decrease the flow of the whole network.
+
+    \item Since min cut is max flow, it is also 23.
+
+          \begin{figure}[H]
+              \centering
+              \begin{tikzpicture}[auto]
+                  \tikzstyle{every node} = [align=center, draw, circle, node distance = 2cm]
+                  \node(s){s};
+                  \node[above right of=s](a){a};
+                  \node[below right of=s](c){c};
+                  \node[right of=a](b){b};
+                  \node[right of=c](d){d};
+                  \node[below right of=b](t){t};
+
+                  \path (a) edge[cfgedge] node[draw=none, above](){11} (s);
+                  \path (c) edge[cfgedge] node[draw=none, below](){12} (s);
+                  \path (a) edge[cfgedge] node[draw=none](){1} (c);
+                  \path (b) edge[cfgedge] node[draw=none](){12} (a);
+                  \path (d) edge[cfgedge] node[draw=none](){11} (c);
+                  \path (b) edge[cfgedge] node[draw=none](){7} (d);
+                  \path (t) edge[cfgedge] node[draw=none, above](){19} (b);
+                  \path (t) edge[cfgedge] node[draw=none, below](){14} (d);
+              \end{tikzpicture}
+              \caption{Final residual graph}
+          \end{figure}
+
+          In the final residual graph, the connected components of $s$ is $\{s\}$.
+          Thus the min cut would be all capacity out of $\{s\}$, i.e. $c(s, a) + c(s, c) = 23$.
+\end{enumerate}

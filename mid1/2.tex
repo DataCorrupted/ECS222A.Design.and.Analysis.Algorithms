@@ -1,0 +1,54 @@
+
+\section*{Q2}
+
+\begin{enumerate}
+    \item Provide some pseudocode which has the recurrence.
+          $T(n) = yT(n/y) + n^3$
+    \item You can answer either of the two questions below.
+          Please state clearly which question you chose to answer.
+          \begin{enumerate}
+              \item What is the asymptotic tightest upper bound of the run-time of your algorithm from part1.
+                    Use either loop unrolling of recursion/or recursion tree method.
+              \item Analyze the selection algorithm given you group numbers into groups of 11 instead of 5.
+                    Is it still linear, provide recurrence and solve via substitution or masters theorem
+          \end{enumerate}
+\end{enumerate}
+
+
+
+\subsection*{Solution}
+
+\begin{enumerate}
+    \item The algorithm would look like:
+
+          \begin{minipage}{\linewidth}
+              \begin{lstlisting}[language=C]
+int y = 8;
+void foo(char* buf, size_t n) {
+    size_t sub_n = n / y;
+    for (int k = 0; k < y; y++){
+        for (int i = 0; i < y; y++) {
+            foo(buf + sub_n * i, sub_n);
+        }
+    }
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            for (int k = 0; k < n; k++) {
+                // TODO
+            }
+        }
+    }
+}
+\end{lstlisting}
+          \end{minipage}
+
+    \item Let's work on the Choice 1, the run-time of this algorithm.
+
+          We have $T(n) = yT(n/y) + n^3$, given $y=8$.
+          Using recursion tree(figure neglected) we have a tree of level $\log_y n$.
+          Thus we have:
+
+          $$T(n) = \sum_{k=1}^{\log_y n} y^k (\frac{n}{y^k})^3 = \sum_{k=1}^{\log_y n} \frac{n^3}{y^{2k}} = \Theta(n^3) $$
+
+\end{enumerate}
