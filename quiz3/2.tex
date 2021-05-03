@@ -1,0 +1,65 @@
+
+\section*{Q2}
+
+Generate 8 random ints 0 or 1.
+Replace all 0's with letter a, and all 1's with letter b.
+Set this string to S.
+For example 01010101 becomes $S=abababab$.
+
+\begin{enumerate}
+    \item Draw a suffix tree for S.
+    \item Show a search for the pattern abab on the tree.
+    \item What is the run-time of the search of the pattern on a suffix tree, in general, give you know that pattern P is present in T $x$-times.
+\end{enumerate}
+
+\subsection*{Solution}
+
+\textbf{Random string generation}.
+\begin{lstlisting}[language=python]
+>>> import random
+>>> def random_str(length):
+...     r_str = ''
+...     for x in range(length):
+...         r_str += chr(random.randint(0,1) + 97)
+...     return r_str
+...
+>>> print(random_str(8))
+'baaabbbb'
+\end{lstlisting}
+
+Therefore, we have $S = baaabbbb\$$
+
+\begin{enumerate}
+    \item Suffix tree generation.
+          \begin{figure}
+              \centering
+              \begin{forest}
+                  for tree={circle,draw, l sep=20pt, s sep=30pt}
+                  [-
+                  [-, edge label={node[midway, above left] {b}}
+                      [0, edge label={node[midway, left] {aaabbb\$}}]
+                      [-,edge label={node[midway, right] {b}}
+                              [-, edge label={node[midway, left] {b}}
+                                      [4, edge label={node[midway, left] {b\$}}]
+                                      [5, edge label={node[midway, right] {\$}}]
+                              ]
+                              [6, edge label={node[midway, right] {\$}}]
+                      ]
+                      [7, edge label={node[midway, right] {\$}}]
+                  ]
+                  [-, edge label={node[midway, below left] {a}}
+                      [-, edge label={node[midway, above left] {a}}
+                              [1 , edge label={node[midway, left] {abbbb\$}}]
+                              [2 , edge label={node[midway, right] {bbbb\$}}]
+                      ]
+                      [3 , edge label={node[midway, above right] {bbbb\$}}]
+                  ]
+                  [8 , edge label={node[midway,above right] {\$}}]
+                  ]
+              \end{forest}
+          \end{figure}
+
+    \item Search for $abab$ fails. Starting from root, take edge $a$. Then there is no edge starting from $bab$, it algorithm quits.
+
+    \item Given $T$ is present for $x$ times, the time would be $O(|S| + x)$.
+\end{enumerate}

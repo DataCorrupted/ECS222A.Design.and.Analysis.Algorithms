@@ -1,0 +1,24 @@
+
+\section*{Q3}
+
+You are deciding which algorithm to implement, given a patterns $P$ and a text $T$ such that
+
+You are given the following requirements: Pattern size is always $|P|=n^2$ Text such that $|T|=n^6$.
+You will be performing $X$ different searches for $X$ different patterns such that $X=n^y$
+
+What is the total create+search time:
+
+\begin{enumerate}
+    \item Using suffix tree: given you create suffix tree in $O(n^2)$.
+    \item Using suffix array: given you already have a suffix tree already created at a cost of $O(n)$
+\end{enumerate}
+
+\subsection*{Solution}
+
+\begin{enumerate}
+    \item Using suffix tree, each search time would be $O(n^6)$ for each search, since $X = n^6$, the total time would be $O(n^6 * n^6 + (n^6)^2) = O(n^{12})$
+    \item Using suffix array, the array length would be $O(n^6 - n^2) = O(n^6)$.
+          Using binary search, the search time for each would be $O(\log n^6) = O(\log n)$.
+          Given $O(n^6)$ searches, the total search time would be $O(n^6 \log n)$, which dominates creation time $O(n^6)$.
+          Thus the total time would be  $O(n^6 \log n)$.
+\end{enumerate}
