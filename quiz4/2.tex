@@ -1,0 +1,80 @@
+
+\section*{Q2}
+
+Steps:
+\begin{enumerate}
+    \item Generate a random string S of a and b characters where $|S|=y$, for example, my $y=6$, I ran a random number generator and got 1,0,1,0,1,1 so my $S=ababaa\$$
+    \item Find $SA(S)$ in any method. You do not need to show work at all for this step.
+\end{enumerate}
+
+My $SA(S)=7,6,5,3,1,4,2$
+
+Please find the LCP using the linear algorithm and show steps that verify you in fact are running a linear algorithm. i.e. at each iteration of $j$, present the value of $h$.
+
+\subsection*{Solution}
+
+\textbf{Random string generation}.
+\begin{lstlisting}[language=python]
+>>> import random
+>>> def random_str(length):
+...     r_str = ''
+...     for x in range(length):
+...         r_str += chr(random.randint(0,1) + 97)
+...     return r_str
+...
+>>> print(random_str(7))
+'aabbaab'
+\end{lstlisting}
+
+Therefore, we have $S = aabbaab\$$
+
+\begin{align*}
+    8 \text{: } & \$        \\
+    5 \text{: } & aab\$     \\
+    1 \text{: } & aabbaab\$ \\
+    6 \text{: } & ab\$      \\
+    2 \text{: } & abbaab\$  \\
+    7 \text{: } & b\$       \\
+    4 \text{: } & baab\$    \\
+    3 \text{: } & bbaab\$   \\
+\end{align*}
+
+Therefore, we have $SA = 8, 5, 1, 6, 2, 7, 4, 3$
+
+\begin{enumerate}
+
+    \item \begin{align*}
+              SA  & = 8, 5, 1, 6, 2, 7, 4, 3                                                          \\
+              LCP & = \text{UND}, \text{ }, \text{ }, \text{ }, \text{ }, \text{ }, \text{ },\text{ } \\
+          \end{align*}
+    \item \begin{align*}
+              SA  & = 8, 5, 1, 6, 2, 7, 4, 3                                                    \\
+              LCP & = \text{UND}, 0, \text{ }, \text{ }, \text{ }, \text{ }, \text{ }, \text{ } \\
+          \end{align*}
+    \item \begin{align*}
+              SA  & = 8, 5, 1, 6, 2, 7, 4, 3                                             \\
+              LCP & = \text{UND}, 0, 3, \text{ }, \text{ }, \text{ }, \text{ }, \text{ } \\
+          \end{align*}
+    \item \begin{align*}
+              SA  & = 8, 5, 1, 6, 2, 7, 4, 3                                      \\
+              LCP & = \text{UND}, 0, 3, 1, \text{ }, \text{ }, \text{ }, \text{ } \\
+          \end{align*}
+    \item \begin{align*}
+              SA  & = 8, 5, 1, 6, 2, 7, 4, 3                               \\
+              LCP & = \text{UND}, 0, 3, 1, 2, \text{ }, \text{ }, \text{ } \\
+          \end{align*}
+    \item \begin{align*}
+              SA  & = 8, 5, 1, 6, 2, 7, 4, 3                        \\
+              LCP & = \text{UND}, 0, 3, 1, 2, 0, \text{ }, \text{ } \\
+          \end{align*}
+    \item \begin{align*}
+              SA  & = 8, 5, 1, 6, 2, 7, 4, 3                 \\
+              LCP & = \text{UND}, 0, 3, 1, 2, 0, 1, \text{ } \\
+          \end{align*}
+    \item \begin{align*}
+              SA  & = 8, 5, 1, 6, 2, 7, 4, 3          \\
+              LCP & = \text{UND}, 0, 3, 1, 2, 0, 1, 1 \\
+          \end{align*}
+\end{enumerate}
+
+

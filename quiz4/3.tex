@@ -1,0 +1,65 @@
+
+\section*{Q3}
+
+\begin{enumerate}
+    \item Given $LCP(Suff_4, Suff_{y+10})=10$, what is the $LCP(Suff_5, Suff_{y+11})$, explain your answer.
+    \item Given $LCP(Suff_4, Suff_{17})=10$, what is the $LCP(Suff_3, Suff_{16})$, explain what your answer could be (maybe several options).
+    \item Draw a suffix subtree for suffix i,j,k such that
+          \begin{align*}
+              suff_i & =string1.string2.string3 \\
+              suff_j & =string1.string3         \\
+              suff_k & =string1.string2.string1 \\
+          \end{align*}
+
+\end{enumerate}
+
+\subsection*{Solution}
+
+\begin{enumerate}
+    \item 9.
+
+          For similicity, let's use $1$ to denote characters that are the same, $0$ for different, $x$ other ones(May be the same, or different, we just don't know).
+          $LCP(S_4, S_{17}) = 10$ implies that the string should look like:
+
+          \begin{lstlisting}
+               ...4 ...8 ...c ...f 
+        0x0    xxx1 1111 1111 1xxx 
+        0x1    1111 1111 11xx xxxx
+          \end{lstlisting}
+
+          Therefore, $LCP(S_5, S_{18}) = 9$
+
+    \item Possibilities: 0 or 11.
+
+          \begin{enumerate}
+              \item 0. In this case, the 3rd and 16-th character is different, i.e.
+                    \begin{lstlisting}
+                ...4 ...8 ...c ...f 
+         0x0    xx01 1111 1111 1xx0 
+         0x1    1111 1111 11xx xxxx
+                    \end{lstlisting}
+              \item 11. In this case, the 3rd and 16-th character is in fact the same.
+              \item 0. In this case, the 3rd and 16-th character is different, i.e.
+                    \begin{lstlisting}
+          ...4 ...8 ...c ...f 
+   0x0    xx11 1111 1111 1xx1 
+   0x1    1111 1111 11xx xxxx
+                    \end{lstlisting}
+          \end{enumerate}
+
+    \item \begin{figure}
+              \centering
+              \begin{forest}
+                  for tree={circle,draw, l sep=20pt, s sep=30pt}
+                  [-
+                  [-, edge label={node[midway, above left] {str1}}
+                      [-, edge label={node[midway, left] {str2}}
+                              [k,edge label={node[midway, left] {str1}}]
+                              [i,edge label={node[midway, right] {str3}}]
+                      ]
+                      [j,edge label={node[midway, right] {str3}}]
+                  ]
+                  ]
+              \end{forest}
+          \end{figure}
+\end{enumerate}
