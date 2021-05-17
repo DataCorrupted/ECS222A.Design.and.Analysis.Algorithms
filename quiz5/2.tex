@@ -1,0 +1,94 @@
+
+
+\section*{Q2}
+
+Steps:
+\begin{enumerate}
+    \item Generate a random string S of a and b characters where |S|=66, for example, I ran a random number generator and got 1,0,1,0,1,1 so my $S=ababaa\$$
+    \item Find SA(S) in any method. You do not need to show work at all for this step.
+          My SA(S)=7,6,5,3,1,4,2
+
+    \item Find LCP[] array by any method you do not need to show work for this step.
+\end{enumerate}
+
+Questions:
+\begin{enumerate}
+    \item Run the suffix tree algorithm by hand creating the first 4 suffixes in linear time, through encoding the edges as we did in class.
+    \item Create the S'=BWT(S) using SA.
+    \item Given S' from above such that S'=BWT(S), use the first last method to create S (even though you already know it but pretend you don't. ) Please show steps
+\end{enumerate}
+
+
+
+
+\subsection*{Solution}
+
+\textbf{Random string generation}.
+\begin{lstlisting}[language=python]
+>>> import random
+>>> def random_str(length):
+...     r_str = ''
+...     for x in range(length):
+...         r_str += chr(random.randint(0,1) + 97)
+...     return r_str
+...
+>>> print(random_str(6))
+'bbaabb'
+\end{lstlisting}
+
+The string we have is $bbaabb\$$
+
+\begin{align*}
+    7\text{ } & \$       \\
+    3\text{ } & aabb\$   \\
+    4\text{ } & abb\$    \\
+    6\text{ } & b\$      \\
+    2\text{ } & baabb\$  \\
+    5\text{ } & bb\$     \\
+    1\text{ } & bbaabb\$ \\
+\end{align*}
+
+The SA we have is $SA(S) = 7, 3, 4, 6, 2, 5, 1$
+
+The LCP we have is $LCP = X, 0, 1, 0, 1, 1, 2$
+
+\begin{enumerate}
+    \item See the figure above.
+          \begin{figure}[t]
+              \centering
+              \begin{forest}
+                  for tree={circle,draw, l sep=20pt, s sep=30pt}
+                  [-
+                  [-, edge label={node[midway, above] {a, [4:4]}}
+                      [4, edge label={node[midway, above left] {bb\$, [5:7]}}]
+                      [3 , edge label={node[midway, above right] {abb\$, [4:7]}}]
+                  ]
+                  [-, edge label={node[midway, below left] {b, [6:6]}}
+                      [2, edge label={node[midway, below left] {aabb\$, [3:7]}}]
+                      [-, edge label={node[midway] {b, [5:5]}}
+                              [5, edge label={node[midway, left] {\$, [7:7]}}]
+                              [1, edge label={node[midway, right] {aabb\$, [3:7]}}]                      ]
+                      [6, edge label={node[midway, right] {\$, [7:7]}}]
+                  ]
+                  [7 , edge label={node[midway,above right] {\$, [7:7]}}]
+                  ]
+              \end{forest}
+          \end{figure}
+
+    \item Using $BWT[i] = T[SA[i] - 1]$, we have $S' = bbabba\$$
+    \item First, let's get $C$ and $rank$:
+          \begin{align*}
+              C       & = \{\$: 1, a: 2, b: 4\} \\
+              rank(k) & = 1, 2, 1, 3, 4, 2, 1   \\
+          \end{align*}
+          Then, we initially have $p = 1, S = \$$
+          \begin{align*}
+              \text{init    } & p = 1, S = \$                                                            \\
+              \text{iter 1  } & pred = S'[p] = \text{b}, p = C[\text{b}] + rank[p] - 1 = 4, S = b\$      \\
+              \text{iter 2  } & pred = S'[p] = \text{b}, p = C[\text{b}] + rank[p] - 1 = 6, S = bb\$     \\
+              \text{iter 3  } & pred = S'[p] = \text{a}, p = C[\text{a}] + rank[p] - 1 = 3, S = abb\$    \\
+              \text{iter 4  } & pred = S'[p] = \text{a}, p = C[\text{a}] + rank[p] - 1 = 2, S = aabb\$   \\
+              \text{iter 5  } & pred = S'[p] = \text{b}, p = C[\text{b}] + rank[p] - 1 = 5, S = baabb\$  \\
+              \text{iter 6  } & pred = S'[p] = \text{b}, p = C[\text{b}] + rank[p] - 1 = 7, S = bbaabb\$ \\
+          \end{align*}
+\end{enumerate}

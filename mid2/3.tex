@@ -1,0 +1,50 @@
+
+\section*{Q3}
+
+Rod cutting problem with cost per cut:
+Assume that the rod cutter you are using charges you a different price for different size cuts.
+Therefore:
+Given:
+n, the length of the rod
+
+P[1..n] s.t. P[i] is the price you can sell rod length ii
+
+C[1..n] s.t. C[i] is the cost of cutting rod length i
+
+Output:  A plan to cut up the rod and sell the pieces in
+a way that maximizes the total profit (amount of money you get minus the costs for cutting).
+
+\subsection*{Solution}
+
+The problem is ambigious. ``C[i] is cost of cutting rod length i'' has two interpretations:
+
+\begin{enumerate}
+    \item ``C[i] is cost of cutting rod AT length i''
+    \item ``C[i] is cost of cutting rod FOR length i''
+\end{enumerate}
+
+If using the second interpretation, you can use $P-C$ as your new price and it's the same as rod cutting problem.
+Therefore, here we assume interpretation one.
+
+\textbf{Recurrence}
+
+We can solve this by asking ``for all k, if we cut at k, the max value I can get by rod k...n''.
+
+\begin{lstlisting}
+    int rod_cut(size_t n){
+        int max_val = P[n];
+        for (int i=1; i<n-1; i++) {
+            int cur_val = rod_cut(i) + P[n-i] - C[i];
+            if (cur_val > max_val) {
+                max_val = cur_val;
+            }
+        }
+        return max_val;
+    }
+\end{lstlisting}
+
+\textbf{DP}
+
+Use \text{opt[i]} for ``Given rod only has length i, the max profit we are going to have.''
+
+Then $$\text{opt[i]} = \max(P[i], \max_{\forall 0 < k < i}(opt[i-k] + P[k] - C[i-k]))$$

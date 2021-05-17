@@ -1,0 +1,23 @@
+
+\section*{Q2}
+
+\begin{lstlisting}
+void foo(Array A) {
+    n=A.size();
+    print "n";
+    if (n<=1) return;
+    foo(A[1...n/y]);
+}
+        
+\end{lstlisting}
+
+Analyze the above code in the case that the data is being passed by value not reference.
+For example, B=[1,2,3,4,....100] call foo(B); makes a full copy of B into A.
+
+\subsection*{Solution}
+
+$$T(n) = T(n/y) + n/y$$
+
+Using master theorem, $a = 1, b = y, f(n) = n/y = O(n)$, $c = \log_b^a < 1$
+
+Thus $$T(n) = \Theta(f(n)) = O(n)$$
