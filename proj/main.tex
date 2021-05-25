@@ -86,7 +86,7 @@
 
 \title[Non-Convex shape Collision Detection]{Efficient Probabilistic Collision Detection for Non-Convex Shapes} % The short title appears at the bottom of every slide, the full title is only on the title page
 
-\author{Rong Yuyang} % Your name
+\author{Yuyang(Peter) Rong} % Your name
 \institute[UCDavis] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
 {
 University of California, Davis \\ % Your institution for the title page
@@ -132,6 +132,27 @@ University of California, Davis \\ % Your institution for the title page
 %------------------------------------------------
 
 %------------------------------------------------
+\section{Background} % Sections can be created in order to organize your presentation into discrete blocks, all sections and subsections are automatically printed in the table of contents as an overview of the talk
+%------------------------------------------------
+
+%\subsection{Subsection Example} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
+
+\begin{frame}
+	\frametitle{Background}
+	\begin{itemize}
+		\item 3D shapes are stored as mesh confined space in Computers.
+		\item (One possible DS) Stored as a list of triangles, which is represented by 3 points.
+		\item Calculate the volume is hard, but the surface is easy.
+		\item The more meshes there are, the more detailed \& realistic the object is.
+	\end{itemize}
+	\begin{figure}
+		\includegraphics[width=5cm]{imgs/rabbit.png}
+	\end{figure}
+\end{frame}
+
+%------------------------------------------------
+
+%------------------------------------------------
 \section{Problem Statement} % Sections can be created in order to organize your presentation into discrete blocks, all sections and subsections are automatically printed in the table of contents as an overview of the talk
 %------------------------------------------------
 
@@ -142,9 +163,10 @@ University of California, Davis \\ % Your institution for the title page
 	Given set:$A, B$(confined by meshes),
 	want to know whether: 
 	$$A \cap B = \emptyset$$
-	True / False ?
-	\textbf{Probability}!
-	\\
+	\begin{itemize}
+		\item A yes/no answer would have false positive and false negative due to perception error
+		\item We use \textbf{Probability} to measure the ``likelyhood'' of colliding.
+	\end{itemize}
 	\textbf{Gaussian Distribution} to A required:
 	$$\epsilon \sim \mathcal{N}(0, \Sigma)$$
 	$$A + \epsilon := \{a+\epsilon | a \in A\}$$
@@ -175,7 +197,8 @@ University of California, Davis \\ % Your institution for the title page
 	\begin{itemize}
 		\item Normalize Gaussian Distribution: $A' = (\Sigma^{-\frac{1}{2}})A$, $B' = (\Sigma^{-\frac{1}{2}})B$.
 		\item Calculate Minkowski Sum: $V' = A' + B'$. Property: For two convex hull, the result is a convex space. $O(|V'|)$
-		\item Divergence Theorem: Integration over $V'$ transformed to $S'$, where $S'$ is the surface of $V'$
+		\item Divergence Theorem: Integration over $V'$ transformed to $S'$, where $S'$ is the surface of $V'$, $F(\mathbf{x})$ is a vector field and $n_s$ is the normal vector of $dS$
+		      $$\iiint_{V'}div(F)\,dV = \oiint_{S'}\mathbf{F}\cdot\mathbf{n_s}\,dS$$
 		\item Mesh representation approximation \& Upper Bound approximation:
 		      $$\oiint_{S'}\mathbf{F}\cdot\mathbf{n_s}\,dS \leq \sum_i(\max_{j = 1,2,3}\mathbf{F}(S_{ij})\cdot\mathbf{n}_i)S_{\Delta S_{i1}S_{i2}S_{i3}}$$
 		      $$P_{real} \leq P_{calculated}$$
