@@ -1,0 +1,25 @@
+\section*{Q5: FPT}
+
+What if your algorithm for k- vertex covered FPT changed to the following:
+
+\begin{lstlisting}
+VC(G,k):
+    if(E=\empty) return true;
+    if(E>=k*n) return false
+    select 2 edges (u,v) and (u',v') from E
+    //if only edge left select the same edge twice
+    a=VC(G-u,k-1);
+    b=VC(G-v,k-1);
+    c=VC(G-u',k-1);
+    d=VC(G-v',k-1);
+    return a OR b OR c OR d
+\end{lstlisting}
+
+What is the runtime of the algorithm? is it still FPT?
+
+\subsection*{Solution}
+
+$$T(k) = 2N(N-1)T(k-1)$$
+Thus we have $T(k) = O(N^{2k})$.
+
+But yes, it is still FPT, i.e. we can trace back the calling stack to find the solution if the answer is True.

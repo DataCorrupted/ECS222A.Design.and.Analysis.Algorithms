@@ -1,50 +1,25 @@
 
 \section*{Q3}
 
-Rod cutting problem with cost per cut:
-Assume that the rod cutter you are using charges you a different price for different size cuts.
-Therefore:
-Given:
-n, the length of the rod
-
-P[1..n] s.t. P[i] is the price you can sell rod length ii
-
-C[1..n] s.t. C[i] is the cost of cutting rod length i
-
-Output:  A plan to cut up the rod and sell the pieces in
-a way that maximizes the total profit (amount of money you get minus the costs for cutting).
+The most efficient run-time of creating a suffix tree for a string size $n^y$ where n is some variable is
+(explain the method of creation used)
 
 \subsection*{Solution}
 
-The problem is ambigious. ``C[i] is cost of cutting rod length i'' has two interpretations:
+Given $y=7$, the runtime is $O(n^7)$.
 
 \begin{enumerate}
-    \item ``C[i] is cost of cutting rod AT length i''
-    \item ``C[i] is cost of cutting rod FOR length i''
+    \item Create SA in $O(n^7)$.
+          \begin{enumerate}
+              \item Using divide and concer, pad $\$$ signs after the string.
+              \item Find $S_1$ and $S_2$, sort using affix sort.
+              \item $S' = S_1 \cdot S_2$, create $SA(S')$ recursively.
+              \item Merge $SA(S')$ with $S_3$, which should also be linear.
+          \end{enumerate}
+    \item Using SA, create LCP in linear time.
+    \item Create suffix tree.
+          \begin{enumerate}
+              \item If a prefix doesn't have a note yet, create it.
+              \item For any new prefix, check the LCP and find correspond node of LCP, create a new child after that node.
+          \end{enumerate}
 \end{enumerate}
-
-If using the second interpretation, you can use $P-C$ as your new price and it's the same as rod cutting problem.
-Therefore, here we assume interpretation one.
-
-\textbf{Recurrence}
-
-We can solve this by asking ``for all k, if we cut at k, the max value I can get by rod k...n''.
-
-\begin{lstlisting}
-    int rod_cut(size_t n){
-        int max_val = P[n];
-        for (int i=1; i<n-1; i++) {
-            int cur_val = rod_cut(i) + P[n-i] - C[i];
-            if (cur_val > max_val) {
-                max_val = cur_val;
-            }
-        }
-        return max_val;
-    }
-\end{lstlisting}
-
-\textbf{DP}
-
-Use \text{opt[i]} for ``Given rod only has length i, the max profit we are going to have.''
-
-Then $$\text{opt[i]} = \max(P[i], \max_{\forall 0 < k < i}(opt[i-k] + P[k] - C[i-k]))$$

@@ -141,12 +141,13 @@ University of California, Davis \\ % Your institution for the title page
 	\frametitle{Background}
 	\begin{itemize}
 		\item 3D shapes are stored as mesh confined space in Computers.
-		\item (One possible DS) Stored as a list of triangles, which is represented by 3 points.
+		\item (One possible DS) Stored as a list of faces(triangles), which is represented by 3 vertices.
 		\item Calculate the volume is hard, but the surface is easy.
-		\item The more meshes there are, the more detailed \& realistic the object is.
+		\item The more faces there are, the more detailed \& realistic the object is.
 	\end{itemize}
 	\begin{figure}
-		\includegraphics[width=5cm]{imgs/rabbit.png}
+		\includegraphics[height=4cm]{imgs/Mesh_fv.jpg}
+		\includegraphics[height=4cm]{imgs/rabbit.png}
 	\end{figure}
 \end{frame}
 
@@ -181,7 +182,7 @@ University of California, Davis \\ % Your institution for the title page
 
 %------------------------------------------------
 %\begin{frame}
-%\frametitle{Convex shape}
+%	\frametitle{Convex shape}
 %	$A$ is a convex set $\Leftrightarrow$ \\ $\forall a, b \in A$, 
 %	$\forall s\geq 0, t \geq 0, s+t=1$, s.t. $sa+tb \in A$
 %	\begin{figure}\label{Convex}
@@ -190,18 +191,18 @@ University of California, Davis \\ % Your institution for the title page
 %		\caption{The left hand side is a convex set while the right hand side is not.}
 %	\end{figure}
 %\end{frame}
-
 %------------------------------------------------
 \begin{frame}
 	\frametitle{Probability on convex shape}
 	\begin{itemize}
 		\item Normalize Gaussian Distribution: $A' = (\Sigma^{-\frac{1}{2}})A$, $B' = (\Sigma^{-\frac{1}{2}})B$.
-		\item Calculate Minkowski Sum: $V' = A' + B'$. Property: For two convex hull, the result is a convex space. $O(|V'|)$
+		\item Calculate Minkowski Sum: $V' = A' + B'$. Can be done in $O(|V'|)$, where $|V'|$ is the number of the triangles of the shape.
 		\item Divergence Theorem: Integration over $V'$ transformed to $S'$, where $S'$ is the surface of $V'$, $F(\mathbf{x})$ is a vector field and $n_s$ is the normal vector of $dS$
 		      $$\iiint_{V'}div(F)\,dV = \oiint_{S'}\mathbf{F}\cdot\mathbf{n_s}\,dS$$
 		\item Mesh representation approximation \& Upper Bound approximation:
 		      $$\oiint_{S'}\mathbf{F}\cdot\mathbf{n_s}\,dS \leq \sum_i(\max_{j = 1,2,3}\mathbf{F}(S_{ij})\cdot\mathbf{n}_i)S_{\Delta S_{i1}S_{i2}S_{i3}}$$
 		      $$P_{real} \leq P_{calculated}$$
+		\item Total time: $O(|V'|)$.
 	\end{itemize}
 \end{frame}
 
@@ -283,7 +284,6 @@ University of California, Davis \\ % Your institution for the title page
 	\begin{itemize}
 		\item Probabilistic collision detection for general shapes.
 		\item Fast and reliable
-		\item Drawback: only translation collision, rotation not considered.
 	\end{itemize}
 \end{frame}
 
